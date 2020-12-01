@@ -1,6 +1,9 @@
 <?php
 
-use kalanis\kw_templates\Template\Item;
+namespace BasicTests;
+
+
+use CommonTestClass;
 
 
 class ItemTest extends CommonTestClass

@@ -8,6 +8,12 @@ Simple template system for PHP and Python
 {
     "require": {
         "alex-kalanis/kw_templates": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "http",
+            "url":  "https://github.com/alex-kalanis/kw_templates.git"
+        }
     }
 }
 ```

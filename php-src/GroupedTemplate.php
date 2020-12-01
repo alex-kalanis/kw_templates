@@ -3,7 +3,7 @@
 namespace kalanis\kw_templates;
 
 
-use kalanis\kw_templates\Template\Exception;
+use kalanis\kw_templates\TemplateException;
 
 
 /**
@@ -39,13 +39,13 @@ abstract class GroupedTemplate extends ATemplate
     /**
      * @param string $key
      * @return $this
-     * @throws Exception
+     * @throws TemplateException
      * Call only from method in extending class and be prepared for resetting items due unavailability some of them
      */
     protected function selectTemplate(string $key): self
     {
         if (!isset(static::$knownTemplates[$key])) {
-            throw new Exception(sprintf('Unknown template %s from group %s', $key, get_class($this)));
+            throw new TemplateException(sprintf('Unknown template %s from group %s', $key, get_class($this)));
         }
         $this->setTemplate(static::$knownTemplates[$key]);
         return $this;

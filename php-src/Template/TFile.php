@@ -3,6 +3,9 @@
 namespace kalanis\kw_templates\Template;
 
 
+use kalanis\kw_templates\TemplateException;
+
+
 /**
  * Trait TFile
  * @package kalanis\kw_templates\Template
@@ -13,14 +16,14 @@ trait TFile
 
     /**
      * @return string
-     * @throws Exception
+     * @throws TemplateException
      */
     protected function loadTemplate(): string
     {
         $path = $this->templatePath();
         $result = @file_get_contents($path);
         if (false === $result) {
-            throw new Exception(sprintf('Template file %s not found', $path));
+            throw new TemplateException(sprintf('Template file %s not found', $path));
         }
         return $result;
     }
