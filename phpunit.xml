@@ -32,6 +32,13 @@
     <testsuites>
         <testsuite name="ALL">
             <directory>php-tests/BasicTests</directory>
+            <directory>php-tests/HtmlTests</directory>
+        </testsuite>
+        <testsuite name="basic">
+            <directory>php-tests/BasicTests</directory>
+        </testsuite>
+        <testsuite name="html">
+            <directory>php-tests/HtmlTests</directory>
         </testsuite>
     </testsuites>
 </phpunit>

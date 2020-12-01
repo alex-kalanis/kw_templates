@@ -1,5 +1,9 @@
 <?php
 
+namespace BasicTests;
+
+
+use CommonTestClass;
 use kalanis\kw_templates\GroupedTemplate;
 use kalanis\kw_templates\Template;
 
@@ -18,7 +22,7 @@ class GroupTemplateTest extends CommonTestClass
     }
 
     /**
-     * @expectedException  \kalanis\kw_templates\Template\Exception
+     * @expectedException  \kalanis\kw_templates\TemplateException
      */
     public function testUnknown()
     {

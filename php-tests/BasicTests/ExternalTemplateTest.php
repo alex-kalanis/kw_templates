@@ -1,5 +1,9 @@
 <?php
 
+namespace BasicTests;
+
+
+use CommonTestClass;
 use kalanis\kw_templates\ExternalTemplate;
 use kalanis\kw_templates\Template;
 

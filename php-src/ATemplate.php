@@ -129,7 +129,7 @@ abstract class ATemplate
      * @param string $what looking for
      * @param int $begin after...
      * @return int
-     * @throws Template\Exception
+     * @throws TemplateException
      */
     public function position(string $what, int $begin = 0): int
     {
@@ -137,7 +137,7 @@ abstract class ATemplate
         $w = substr($w, $begin);
         $p = strpos($w, $what);
         if ($p === false) {
-            throw new Template\Exception('Not found');
+            throw new TemplateException('Not found');
         }
         return $p;
     }
