@@ -1,14 +1,18 @@
 {
     "name": "alex-kalanis/kw_templates",
     "description": "Basic template system from KWCMS",
-    "keywords": [],
-    "license": "BSD 3-Clause",
-    "type": "project",
+    "keywords": [
+        "template",
+        "templates",
+        "html"
+    ],
+    "license": "BSD-3-Clause",
+    "type": "library",
     "require": {
         "php": ">=7.2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~7.2"
+        "phpunit/phpunit": ">=7.2"
     },
     "autoload": {
         "psr-4": {

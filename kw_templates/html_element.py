@@ -1,5 +1,144 @@
 
-class TAttributes:
+from .php import ArrayIteratorProcessor
+
+
+class IAttributes:
+    """
+     * Contains constants used across the project which cannot be defined in traits
+    """
+
+    ATTR_NAME_CLASS = 'class'
+    ATTR_SEP_CLASS = ' '
+    ATTR_NAME_STYLE = 'style'
+    ATTR_SEP_STYLE = ';'
+    ATTR_SET_STYLE = ':'
+
+    def add_attributes(self, attribs):
+        """
+         * Add array of attributes into current object attributes
+         * attribs is array of tuples [(key, val), (key, val), ...] or string
+        """
+        # import pprint
+        # pprint.pprint(vals)
+        raise NotImplementedError('TBA')
+
+    def set_attributes(self, attribs):
+        """
+         * Set attributes, leave nothing from previous ones
+        """
+        raise NotImplementedError('TBA')
+
+    def get_attributes(self) -> list:
+        """
+         * Get all available attributes
+        """
+        raise NotImplementedError('TBA')
+
+    def get_attribute(self, name: str):
+        """
+         * Get attribute value
+        """
+        raise NotImplementedError('TBA')
+
+    def set_attribute(self, name: str, value: str):
+        """
+         * Set attribute value
+         * only one allowed
+        """
+        raise NotImplementedError('TBA')
+
+
+class IElement(IAttributes):
+    """
+     * Abstraction of element - included class for passing references onto self
+    """
+
+    def get_alias(self):
+        """
+         * Returns object alias
+        """
+        raise NotImplementedError('TBA')
+
+    def render(self) -> str:
+        """
+         * Render element
+        """
+        raise NotImplementedError('TBA')
+
+    def set_children(self, children=None):
+        """
+         * Set children of element
+        """
+        raise NotImplementedError('TBA')
+
+    def get_children(self):
+        """
+         * Return all children as iterator
+        """
+        raise NotImplementedError('TBA')
+
+
+class IHtmlElement(IElement):
+    """
+     * Abstraction of element - included class for passing references onto self
+    """
+
+    def get_alias(self):
+        """
+         * Returns object alias
+        """
+        raise NotImplementedError('TBA')
+
+    def render(self) -> str:
+        """
+         * Render element
+        """
+        raise NotImplementedError('TBA')
+
+    def add_child(self, child, alias=None, merge: bool = False, inherit: bool = False):
+        """
+         * Add child on stack end or replace the current one (if they have same alias)
+         * @param AHtmlElement|string $child
+         * @param string|None $alias - key for lookup; beware of empty strings
+         * @param bool $merge merge with original element if already exists
+         * @param bool $inherit inherit properties from current element
+         * @return $this
+        """
+        raise NotImplementedError('TBA')
+
+    def merge(self, child: IElement):
+        """
+         * Merge this element with child and its attributes
+         * has param as IElement because python dislikes pointer to self
+        """
+        raise NotImplementedError('TBA')
+
+    def remove_child(self, child_alias):
+        """
+         * Remove child by key
+        """
+        raise NotImplementedError('TBA')
+
+    def last_child(self):
+        """
+         * Return last child
+        """
+        raise NotImplementedError('TBA')
+
+    def set_children(self, children=None):
+        """
+         * Set children of element
+        """
+        raise NotImplementedError('TBA')
+
+    def get_children(self):
+        """
+         * Return all children as iterator
+        """
+        raise NotImplementedError('TBA')
+
+
+class TAttributes(IAttributes):
     """
      * Trait for work with attributes
      * It's not necessary to have attributes directly in HtmlElement
@@ -30,7 +169,6 @@ class TAttributes:
         # pprint.pprint(vals)
         for (k, v) in self.attributes_parse(attribs):
             self.set_attribute(k, v)
-        return self
 
     def attributes_parse(self, attribs) -> list:
         """
@@ -103,7 +241,6 @@ class TAttributes:
         """
         self._attributes = []
         self.add_attributes(attribs)
-        return self
 
     def get_attributes(self) -> list:
         """
@@ -115,38 +252,23 @@ class TAttributes:
         """
          * Get attribute value
         """
-        for (k, v) in self._attributes:
-            if k == name:
-                return v
-        return None
+        try:
+            return ArrayIteratorProcessor.get(self._attributes, name)
+        except ValueError:
+            return None
 
     def set_attribute(self, name: str, value: str):
         """
          * Set attribute value
          * only one allowed
         """
-        result = []
-        known = False
-        for (k, v) in self._attributes:
-            if k == name:
-                v = value
-                known = True
-            result.append((k, v))
-        if not known:
-            result.append((name, value))
-        self._attributes = result
-        return self
+        self._attributes = ArrayIteratorProcessor.set(self._attributes, name, value)
 
     def remove_attribute(self, name):
         """
          * Remove attribute
         """
-        result = []
-        for (k, v) in self._attributes:
-            if k != name:
-                result.append((k, v))
-        self._attributes = result
-        return self
+        self._attributes = ArrayIteratorProcessor.remove(self._attributes, name)
 
 
 class TStyles(TAttributes):
@@ -156,52 +278,36 @@ class TStyles(TAttributes):
     """
 
     def add_css(self, name: str, value: str):
-        attr_style = self._read_css()
-        style = []
-        updated = False
-        for (k, v) in attr_style:
-            if k == name:
-                v = value
-                updated = True
-            style.append((k, v))
-        if not updated:
-            style.append((name, value))
-        self._update_css(style)
+        self._update_css(ArrayIteratorProcessor.set(self._read_css(), name, value))
         return self
 
     def get_css(self, name: str):
-        attr_style = self._read_css()
-        for (k, v) in attr_style:
-            if k == name:
-                return v
-        return None
+        try:
+            return ArrayIteratorProcessor.get(self._read_css(), name)
+        except ValueError:
+            return None
 
     def remove_css(self, name: str):
-        attr_style = self._read_css()
-        style = []
-        for (k, v) in attr_style:
-            if k != name:
-                style.append((k, v))
-        self._update_css(style)
+        self._update_css(ArrayIteratorProcessor.remove(self._read_css(), name))
         return self
 
     def _read_css(self):
-        attr_style = self.get_attribute('style')
+        attr_style = self.get_attribute(IAttributes.ATTR_NAME_STYLE)
         if not attr_style:
             return []
-        parts = attr_style.split(';')
+        parts = attr_style.split(IAttributes.ATTR_SEP_STYLE)
         styles = []
         for part in parts:
-            if part and (':' in part):
-                kv = part.split(':')
+            if part and (IAttributes.ATTR_SET_STYLE in part):
+                kv = part.split(IAttributes.ATTR_SET_STYLE)
                 styles.append((kv[0], kv[1]))
         return styles
 
     def _update_css(self, attr_style):
         style = ''
         for (k, v) in attr_style:
-            style += '%s:%s;' % (k, v)
-        self.set_attribute('style', style)
+            style += '%s%s%s%s' % (k, IAttributes.ATTR_SET_STYLE, v, IAttributes.ATTR_SEP_STYLE)
+        self.set_attribute(IAttributes.ATTR_NAME_STYLE, style)
 
 
 class TCss(TAttributes):
@@ -214,28 +320,28 @@ class TCss(TAttributes):
         """
          * Add class into attribute class
         """
-        data = self.get_attribute('class')
+        data = self.get_attribute(IAttributes.ATTR_NAME_CLASS)
         if data:
-            entries = list(data.split(' '))
+            entries = list(data.split(IAttributes.ATTR_SEP_CLASS))
             if name not in entries:
                 entries.append(name)
-                self.set_attribute('class', ' '.join(entries))
+                self.set_attribute(IAttributes.ATTR_NAME_CLASS, IAttributes.ATTR_SEP_CLASS.join(entries))
         else:
-            self.set_attribute('class', name)
+            self.set_attribute(IAttributes.ATTR_NAME_CLASS, name)
         return self
 
     def remove_class(self, name):
         """
          * Remote class from attribute class
         """
-        data = self.get_attribute('class')
+        data = self.get_attribute(IAttributes.ATTR_NAME_CLASS)
         if data:
-            entries = list(data.split(' '))
+            entries = list(data.split(IAttributes.ATTR_SEP_CLASS))
             left = []
             for entry in entries:
                 if entry != name:
                     left.append(entry)
-            self.set_attribute('class', ' '.join(left))
+            self.set_attribute(IAttributes.ATTR_NAME_CLASS, IAttributes.ATTR_SEP_CLASS.join(left))
         return self
 
 
@@ -262,9 +368,9 @@ class THtml:
         return self._inner_html
 
 
-class AElement(TAttributes):
+class TElement(TAttributes):
     """
-     * Abstraction of element - middle class for passing references onto self
+     * Abstraction of element - included class for passing references onto self
     """
 
     def __init__(self):
@@ -279,9 +385,6 @@ class AElement(TAttributes):
          * Returns object alias
         """
         return self._alias
-
-    def __str__(self):
-        return self.render()
 
     def render(self) -> str:
         """
@@ -302,7 +405,47 @@ class AElement(TAttributes):
         yield from self._children
 
 
-class AHtmlElement(AElement):
+class TParent:
+    """
+     * Trait for work with parenting of html elements
+    """
+
+    def __init__(self):
+        """
+         * Included Trait for work with parenting of html elements
+        """
+        self._parent = None
+
+    def set_parent(self, parent: TElement = None):
+        """
+         * Set parent element
+        """
+        self._parent = parent
+        self._after_parent_set()
+        return self
+
+    def get_parent(self) -> TElement:
+        """
+         * Returns parent element
+        """
+        return self._parent
+
+    def _after_parent_set(self):
+        """
+         * Change element settings after new parent has been set
+        """
+        pass
+
+    def append(self, element, alias: str = None):
+        """
+         * Add $element after current one - if there is any parent
+        """
+        if isinstance(self._parent, IHtmlElement):
+            self._parent.add_child(element, alias)
+        return self
+
+
+class THtmlElement(TElement, TParent, IHtmlElement):
     """
      * Abstraction of HTML element
      * Each HTML element must have a few following things
@@ -320,35 +463,10 @@ class AHtmlElement(AElement):
          * Included Trait for work with parenting of html elements
         """
         super().__init__()
+        # super(TElement).__init__()
+        # super(TParent).__init__()
         self._parent = None
-
-    def set_parent(self, parent: AElement = None):
-        """
-         * Set parent element
-        """
-        self._parent = parent
-        self._after_parent_set()
-        return self
-
-    def get_parent(self) -> AElement:
-        """
-         * Returns parent element
-        """
-        return self._parent
-
-    def _after_parent_set(self):
-        """
-         * Change element settings after new parent has been set
-        """
-        pass
-
-    def append(self, element, alias: str = None):
-        """
-         * Add $element after current one - if there is any parent
-        """
-        if isinstance(self._parent, AHtmlElement):
-            self._parent.add_child(element, alias)
-        return self
+        self._iter_key = 0
 
     def render(self) -> str:
         """
@@ -362,19 +480,18 @@ class AHtmlElement(AElement):
         """
         return self._child_delimiter.join(map(self._render_child, self._children))
 
-    def _render_child(self, child: AElement) -> str:
+    def _render_child(self, child: IHtmlElement) -> str:
         return child.render()
 
     def add_child(self, child, alias=None, merge: bool = False, inherit: bool = False):
         """
          * Add child on stack end or replace the current one (if they have same alias)
-         * @param AHtmlElement|string $child
+         * @param IHtmlElement|string $child
          * @param string|None $alias - key for lookup; beware of empty strings
          * @param bool $merge merge with original element if already exists
          * @param bool $inherit inherit properties from current element
-         * @return $this
         """
-        if isinstance(child, AElement):
+        if isinstance(child, (IHtmlElement, THtmlElement, TElement)):
             if not self._check_alias(alias):
                 alias = child.get_alias()
         else:
@@ -382,31 +499,23 @@ class AHtmlElement(AElement):
             child = Text(str(child), alias)
         child.set_parent(self)
 
-        # if self._check_alias(alias):
-        #     child = ''
-        # if ($this->checkAlias($alias)) {
-        #     $child = $merge && $this->__isset($alias) ? $this->children[$alias]->merge($child) : $child ;
-        #     $this->children[$alias] = $inherit ? $this->inherit($child) : $child ;
-        # } else {
-        #     $this->children[] = $child;
-        # }
-
-        return self
+        child = self.merge(child) if merge and ArrayIteratorProcessor.is_set(self._children, alias) else child
+        child = self.inherit(child) if inherit else child
+        self._children = ArrayIteratorProcessor.set(self._children, alias, child)
 
     def _check_alias(self, alias) -> bool:
         return not ( (alias is None) or ('' == alias)
-                     or (not isinstance(alias, (list, dict, tuple, enumerate, str, bool)))
+                     or (not isinstance(alias, (int, float, enumerate, str)))
                    )
 
-    def merge(self, child: AElement):
+    def merge(self, child: IHtmlElement):
         """
          * Merge this element with child and its attributes
         """
         self.set_children(child.get_children())
         self.set_attributes(child.get_attributes())
-        return self
 
-    def inherit(self, child: AElement) -> AElement:
+    def inherit(self, child: IHtmlElement) -> IHtmlElement:
         """
          * Inheritance - set properties of this object into the child
         """
@@ -420,12 +529,7 @@ class AHtmlElement(AElement):
         """
          * Remove child by key
         """
-        left = []
-        for (alias, child) in self._children:
-            if child_alias != alias:
-                left.append((alias, child))
-        self._children = left
-        return self
+        self._children = ArrayIteratorProcessor.remove(self._children, child_alias)
 
     def last_child(self):
         """
@@ -446,57 +550,63 @@ class AHtmlElement(AElement):
                     child,
                     child.get_alias() if isinstance(alias, (int, float)) and self._check_alias(child.get_alias()) else alias
                 )
+
+
+class AHtmlElement(THtmlElement):
+    """
+     * Abstraction of HTML element - this is compact class which only needs extending
+    """
+
+    def __str__(self):
+        return self.render()
+
+    def __contains__(self, item):
+        return ArrayIteratorProcessor.is_set(self._children, item)
+
+    def __getattr__(self, item):
+        """
+         * Automatic access to child via Element->childAlias()
+        """
+        try:
+            return self.item
+        except AttributeError:
+            try:
+                if ArrayIteratorProcessor.is_set(self._children, item):
+                    return ArrayIteratorProcessor.get(self._children, item)
+                else:
+                    raise
+            except ValueError:
+                return None
+
+    def __setattr__(self, key, value):
+        """
+         * Set child directly by setting a property of this class
+        """
+        try:
+            setattr(self, key, value)
+        except AttributeError:
+            self.add_child(value, key)
+
+    def __call__(self, method, *args, **kwargs):
+        if 1 == len(args):
+            return self.set_attribute(method, args[0])
+        elif 0 == len(args):
+            return self.get_attribute(method)
+
+    def __delattr__(self, item):
+        if not hasattr(self, item):
+            self.remove_child(item)
+
+    def __iter__(self):
+        self._iter_key = 0
         return self
 
-    # /**
-    #  * Automatic access to child via Element->childAlias()
-    #  * @param string|int $alias
-    #  * @return AHtmlElement|null
-    #  */
-    # public final function __get($alias)
-    # {
-    #     return $this->__isset($alias) ? $this->children[$alias] : null ;
-    # }
-    #
-    # /**
-    #  * Set child directly by setting a property of this class
-    #  * @param string|int $alias
-    #  * @param mixed $value
-    #  */
-    # public final function __set($alias, $value)
-    # {
-    #     $this->addChild($value, $alias);
-    # }
-    #
-    # /**
-    #  * Call isset() for protected or private variables
-    #  * @param string|int $alias
-    #  * @return bool
-    #  */
-    # public final function __isset($alias)
-    # {
-    #     return isset($this->children[$alias]);
-    # }
-    #
-    # /**
-    #  * Call empty() for protected or private variables
-    #  * @param string|int $alias
-    #  * @return bool
-    #  */
-    # public final function __empty($alias)
-    # {
-    #     return empty($this->children[$alias]);
-    # }
-    #
-    # public function __call($method, $args)
-    # {
-    #     if (count($args) == 1) {
-    #         return $this->setAttribute($method, $args[0]);
-    #     } elseif (count($args) == 0) {
-    #         return $this->getAttribute($method);
-    #     }
-    #     return $this;
-    # }
+    def __next__(self):
+        key = self._iter_key
+        self._iter_key =+ 1
+        if self._iter_key > len(self._array):
+            raise StopIteration()
+        return self._children[key]
 
     def __len__(self):
         return len(self._children)

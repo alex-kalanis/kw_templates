@@ -1,5 +1,5 @@
 
-from kw_templates.html_element import TAttributes, TStyles, TCss
+from kw_templates.html_element import TAttributes, TStyles, TCss, AHtmlElement
 from kw_tests.common_class import CommonTestClass
 
 
@@ -91,3 +91,109 @@ class CssTest(CommonTestClass):
         assert 'foo baz' == data.get_attribute('class')
 
 
+class Element(AHtmlElement):
+
+    def __init__(self, alias: str = ''):
+        super().__init__()
+        self._template = '--%s-- %s'
+        self._alias = alias
+
+
+class SomeChild(AHtmlElement):
+
+    def __init__(self, alias: str = ''):
+        super().__init__()
+        self._template = '::poiuztrewq %s %s'
+
+
+class ElseChild(AHtmlElement):
+
+    def __init__(self, alias: str = ''):
+        super().__init__()
+        self._template = '::lkjhgfdsa %s %s'
+
+
+class NextChild(AHtmlElement):
+
+    def __init__(self, alias: str = ''):
+        super().__init__()
+        self._template = 'mnbvcxy %s %s'
+
+
+class ElementTest(CommonTestClass):
+
+    def test_simple(self):
+        data = Element('exe')
+        assert 'exe' == data.get_alias()
+
+    def test_attributes(self):
+        data = Element('exe')
+        assert not data.dummy()
+        data.dummy('resggs')
+        assert 'resggs' == data.dummy()
+        data.remove_attribute('dummy')
+        assert not data.dummy()
+        data.foo('fkhlg', 'fpklasg')
+        assert not data.foo()
+
+    def test_children(self):
+        data = Element('exe')
+        assert not data.get_children()
+        data.set_children([
+            (0, SomeChild()),
+            ('dome', ElseChild()),
+        ])
+        assert not data.dummy
+        data.dummy = 'resggs'
+        assert isinstance(data.dummy, AHtmlElement)
+        assert isinstance(data.dome, AHtmlElement)
+        assert isinstance(data.__getattr__(0), AHtmlElement)
+        data.__setattr__('or', NextChild())
+        data.remove_child('dome')
+        assert not data.__contains__('dome')
+        assert 'dome' not in data
+
+    def test_inheritance(self):
+        original = Element('exe')
+        original.set_attributes([
+            ('cde', 'zfx'),
+            ('vfr', 'ohv'),
+        ])
+        sender = SomeChild()
+        result = original.inherit(sender)
+
+        assert 'ohv' == result.get_attribute('vfr')
+        assert 'zfx' == result.get_attribute('cde')
+        assert result != original
+
+    def test_merge(self):
+        data = Element('exe')
+        data.set_attributes([
+            ('cde', 'zfx'),
+            ('vfr', 'ohv'),
+        ])
+        result = SomeChild()
+        result.merge(data)
+
+        assert 'ohv' == result.get_attribute('vfr')
+        assert 'zfx' == result.get_attribute('cde')
+
+    def test_render(self):
+        data = Element('exe')
+        data.set_attributes([
+            ('cde', 'zfx'),
+            ('vfr', 'ohv'),
+        ])
+        data1 = SomeChild()
+        data1.setAttributes([
+            ('vfr', 'ohv'),
+        ])
+        data2 = ElseChild()
+        data2.set_attributes([
+            ('cde', 'zfx'),
+        ])
+
+        data.add_child(data1)
+        data.add_child(data2)
+
+        assert '-- cde="zfx" vfr="ohv"-- ::poiuztrewq  vfr="ohv" ' + "\n" + '::lkjhgfdsa  cde="zfx" ' == data.render()
