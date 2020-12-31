@@ -6,6 +6,7 @@ namespace BasicTests;
 use CommonTestClass;
 use kalanis\kw_templates\ATemplate;
 use kalanis\kw_templates\Template;
+use kalanis\kw_templates\TemplateException;
 
 
 class FileTemplateTest extends CommonTestClass
@@ -16,11 +17,9 @@ class FileTemplateTest extends CommonTestClass
         $this->assertEquals('Something to test', $template->render());
     }
 
-    /**
-     * @expectedException  \kalanis\kw_templates\TemplateException
-     */
     public function testUnknown()
     {
+        $this->expectException(TemplateException::class);
         new MockFileTemplate2();
     }
 }

@@ -6,6 +6,7 @@ namespace BasicTests;
 use CommonTestClass;
 use kalanis\kw_templates\ATemplate;
 use kalanis\kw_templates\Template;
+use kalanis\kw_templates\TemplateException;
 
 
 class TemplateTest extends CommonTestClass
@@ -24,12 +25,13 @@ class TemplateTest extends CommonTestClass
     }
 
     /**
-     * @expectedException  \kalanis\kw_templates\TemplateException
+     * @throws TemplateException
      */
     public function testNothingFound()
     {
         $template = new MockTemplate1();
         $this->assertEquals(35, $template->position('needs'));
+        $this->expectException(TemplateException::class);
         $template->position('needs', 45); // crash - nothing found
     }
 

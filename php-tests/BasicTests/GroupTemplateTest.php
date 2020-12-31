@@ -6,6 +6,7 @@ namespace BasicTests;
 use CommonTestClass;
 use kalanis\kw_templates\GroupedTemplate;
 use kalanis\kw_templates\Template;
+use kalanis\kw_templates\TemplateException;
 
 
 class GroupTemplateTest extends CommonTestClass
@@ -21,12 +22,10 @@ class GroupTemplateTest extends CommonTestClass
         $this->assertEquals('unordered list: found', $template->render());
     }
 
-    /**
-     * @expectedException  \kalanis\kw_templates\TemplateException
-     */
     public function testUnknown()
     {
         $template = new MockGroupedTemplate1();
+        $this->expectException(TemplateException::class);
         $template->useUnknown(); // crash - nothing found
     }
 }
