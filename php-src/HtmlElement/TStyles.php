@@ -37,7 +37,7 @@ trait TStyles
         return $this;
     }
 
-    private final function readCss(): array
+    private function readCss(): array
     {
         $attrStyle = $this->getAttribute(IAttributes::ATTR_NAME_STYLE);
         $parts = explode(IAttributes::ATTR_SEP_STYLE, $attrStyle);
@@ -52,7 +52,7 @@ trait TStyles
         return $styles;
     }
 
-    private final function updateCss(array $attrStyle): self
+    private function updateCss(array $attrStyle): self
     {
         $style = '';
         foreach ($attrStyle as $key => $val) {
