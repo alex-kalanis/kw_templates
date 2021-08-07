@@ -43,6 +43,6 @@ class Item
 
     public function getValue(): string
     {
-        return $this->value ?: $this->default ;
+        return $this->value ?? $this->default ;
     }
 }
