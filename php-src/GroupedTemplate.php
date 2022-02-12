@@ -12,7 +12,7 @@ abstract class GroupedTemplate extends ATemplate
 {
     protected static $knownTemplates;
 
-    protected final function loadTemplate(): string
+    protected function loadTemplate(): string
     {
         if (empty(static::$knownTemplates)) {
             static::$knownTemplates = $this->defineAvailableTemplates();

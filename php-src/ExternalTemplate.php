@@ -10,7 +10,7 @@ namespace kalanis\kw_templates;
  */
 abstract class ExternalTemplate extends ATemplate
 {
-    protected final function loadTemplate(): string
+    protected function loadTemplate(): string
     {
         return '';
     }
