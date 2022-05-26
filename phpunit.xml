@@ -4,7 +4,6 @@
         bootstrap="php-tests/_bootstrap.php"
         backupGlobals="false"
         backupStaticAttributes="false"
-        cacheTokens="false"
         colors="true"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
