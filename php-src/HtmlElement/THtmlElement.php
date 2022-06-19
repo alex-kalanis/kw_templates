@@ -148,7 +148,7 @@ trait THtmlElement
     public function lastChild(): ?IHtmlElement
     {
         $last = end($this->children);
-        return $last === false ? null : $last ;
+        return (false === $last) ? null : $last ;
     }
 
     /**
@@ -225,9 +225,9 @@ trait THtmlElement
      */
     public function __call($method, $args)
     {
-        if (count($args) == 0) {
+        if (0 == count($args)) {
             return $this->getAttribute(strval($method));
-        } elseif (count($args) == 1) {
+        } elseif (1 == count($args)) {
             $this->setAttribute(strval($method), strval(reset($args)));
         }
         return $this;

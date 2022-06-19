@@ -97,7 +97,7 @@ abstract class ATemplate
     {
         $map = [];
         foreach ($this->items as $item) {
-            $map[(string)$item->getKey()] = (string)$item->getValue();
+            $map[(string) $item->getKey()] = (string) $item->getValue();
         }
         $this->template = strtr($this->template, $map);
     }
@@ -138,7 +138,7 @@ abstract class ATemplate
         $w = $this->template;
         $w = substr($w, $begin);
         $p = strpos($w, $what);
-        if ($p === false) {
+        if (false === $p) {
             throw new TemplateException('Not found');
         }
         return $p;
