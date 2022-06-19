@@ -13,7 +13,7 @@ namespace kalanis\kw_templates\HtmlElement;
  */
 trait TAttributes
 {
-    /** @var string[] */
+    /** @var array<string, string> */
     protected $attributes = [];
 
     /**
@@ -58,7 +58,7 @@ trait TAttributes
     /**
      * Change attributes in variable to 2-dimensional array
      * Expects array, discard rest
-     * @param string[] $attributes
+     * @param array<string|int|bool|array<string>> $attributes
      * @return string[]
      */
     public function attributesParseArray(array $attributes): array
@@ -68,11 +68,11 @@ trait TAttributes
             if (is_string($key)) {
                 $key = strtolower($key);
                 if (is_string($val) || is_numeric($val)) {
-                    $val = strtolower($val);
+                    $val = strtolower(strval($val));
                     $array[$key] = $val;
                 } else if (is_array($val)) {
                     foreach ($val as &$_val) {
-                        $_val = strtolower($_val);
+                        $_val = strtolower(strval($_val));
                     }
                     $val = implode(';', $val);
                     $array[$key] = $val;
@@ -103,7 +103,7 @@ trait TAttributes
 
     /**
      * Set attributes, leave nothing from previous ones
-     * @param array $attributes
+     * @param array<string, string> $attributes
      */
     public function setAttributes(array $attributes): void
     {
@@ -113,7 +113,7 @@ trait TAttributes
 
     /**
      * Get all available attributes
-     * @return string[]
+     * @return array<string, string>
      */
     public function getAttributes(): array
     {

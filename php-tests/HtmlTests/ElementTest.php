@@ -39,6 +39,7 @@ class ElementTest extends CommonTestClass
         $data->setChildren([
             0 => new SomeChild(),
             'dome' => new ElseChild(),
+            'anno' => 'whyy',
         ]);
         $this->assertEmpty($data->dummy);
         $data->dummy = 'resggs';
@@ -105,10 +106,18 @@ class ElementTest extends CommonTestClass
             'cde' => 'zfx',
         ]);
 
+        $data3 = new ElseChild();
+        $data3->setAttributes([
+            'fht' => 'kgs',
+        ]);
+
         $data->addChild($data1);
-        $data->addChild($data2);
+        $data->addChild($data2, 'doo');
 
         $this->assertEquals('-- cde="zfx" vfr="ohv"-- ::poiuztrewq  vfr="ohv" ' . "\n" . '::lkjhgfdsa  cde="zfx" ', $data->render());
+        $data->addChild($data3, 'doo', true);
+
+        $this->assertEquals('-- cde="zfx" vfr="ohv"-- ::poiuztrewq  vfr="ohv" ' . "\n" . '::lkjhgfdsa  fht="kgs" ', $data->render());
     }
 }
 

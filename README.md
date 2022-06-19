@@ -1,5 +1,13 @@
 # kw_templates
 
+[![Build Status](https://travis-ci.org/alex-kalanis/kw_templates.svg?branch=master)](https://travis-ci.org/alex-kalanis/kw_templates)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alex-kalanis/kw_templates/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alex-kalanis/kw_templates/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/alex-kalanis/kw_templates/v/stable.svg?v=1)](https://packagist.org/packages/alex-kalanis/kw_templates)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.3-8892BF.svg)](https://php.net/)
+[![Downloads](https://img.shields.io/packagist/dt/alex-kalanis/kw_templates.svg?v1)](https://packagist.org/packages/alex-kalanis/kw_templates)
+[![License](https://poser.pugx.org/alex-kalanis/kw_templates/license.svg?v=1)](https://packagist.org/packages/alex-kalanis/kw_templates)
+[![Code Coverage](https://scrutinizer-ci.com/g/alex-kalanis/kw_templates/badges/coverage.png?b=master&v=1)](https://scrutinizer-ci.com/g/alex-kalanis/kw_templates/?branch=master)
+
 Simple template system for PHP and Python 
 
 # PHP Installation
@@ -7,7 +15,7 @@ Simple template system for PHP and Python
 ```
 {
     "require": {
-        "alex-kalanis/kw_templates": "1.0"
+        "alex-kalanis/kw_templates": "2.1"
     }
 }
 ```

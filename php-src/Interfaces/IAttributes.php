@@ -24,13 +24,13 @@ interface IAttributes
 
     /**
      * Set attributes, leave nothing from previous ones
-     * @param array $attributes
+     * @param array<string, string> $attributes
      */
     public function setAttributes(array $attributes): void;
 
     /**
      * Get all available attributes
-     * @return string[]
+     * @return array<string, string>
      */
     public function getAttributes(): array;
 }

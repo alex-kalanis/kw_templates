@@ -18,16 +18,27 @@ class HtmlElement extends AHtmlElement
 {
     use TCss, TStyles;
 
+    /** @var string[] */
     protected static $emptyElements = ['img','hr','br','input','meta','area','embed','keygen','link','param','frame'];
 
     /** @var string  element's name */
     private $name = '';
 
-    public static function init(string $name, array $attributes = [])
+    /**
+     * @param string $name
+     * @param array<string, string> $attributes
+     * @return $this
+     */
+    public static function init(string $name, array $attributes = []): self
     {
-        return new static($name, $attributes);
+        // @phpstan-ignore-next-line
+        return new self($name, $attributes);
     }
 
+    /**
+     * @param string $name
+     * @param array<string, string> $attributes
+     */
     public function __construct(string $name, array $attributes = [])
     {
         $name = str_ireplace(['<','>'],'', $name);
