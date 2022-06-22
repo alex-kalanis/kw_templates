@@ -19,7 +19,7 @@ trait TAttributes
     /**
      * Returns serialized attributes
      * Use $attributes param if is set
-     * @param string|string[] $attributes
+     * @param string|array<string, string|int|array<string>>|null $attributes
      * @return string
      */
     protected function renderAttributes($attributes = null): string
@@ -36,7 +36,7 @@ trait TAttributes
 
     /**
      * Add array of attributes into current object attributes
-     * @param string|string[] $attributes
+     * @param string|array<string, string|int|array<string>>|null $attributes
      */
     public function addAttributes($attributes): void
     {
@@ -46,8 +46,8 @@ trait TAttributes
     /**
      * Change attributes in variable to 2-dimensional array
      * Expects array, discard rest
-     * @param string|string[] $attributes
-     * @return string[]
+     * @param string|array<string, string|int|array<string>>|null $attributes
+     * @return array<string, string>
      */
     public function attributesParse($attributes): array
     {
@@ -58,8 +58,8 @@ trait TAttributes
     /**
      * Change attributes in variable to 2-dimensional array
      * Expects array, discard rest
-     * @param array<string|int|bool|array<string>> $attributes
-     * @return string[]
+     * @param array<string|int, string|int|array<string>> $attributes
+     * @return array<string, string>
      */
     public function attributesParseArray(array $attributes): array
     {
@@ -87,7 +87,7 @@ trait TAttributes
      * Expects string like: width="100px" height='150px' style="color:red"
      * Discard rest
      * @param string $attributes
-     * @return string[]
+     * @return array<string|int, string|int>
      */
     public function attributesParseString(string $attributes): array
     {
@@ -103,7 +103,7 @@ trait TAttributes
 
     /**
      * Set attributes, leave nothing from previous ones
-     * @param array<string, string> $attributes
+     * @param string|array<string, string|int|array<string>>|null $attributes
      */
     public function setAttributes(array $attributes): void
     {
