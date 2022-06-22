@@ -105,7 +105,7 @@ trait TAttributes
      * Set attributes, leave nothing from previous ones
      * @param string|array<string, string|int|array<string>>|null $attributes
      */
-    public function setAttributes(array $attributes): void
+    public function setAttributes($attributes): void
     {
         $this->attributes = [];
         $this->addAttributes($attributes);
