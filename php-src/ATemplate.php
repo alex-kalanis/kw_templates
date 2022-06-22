@@ -154,8 +154,8 @@ abstract class ATemplate
     public function paste(string $newString, int $fromBeing, int $skip = 0): void
     {
         # prepare
-        $fromBeing = abs($fromBeing);
-        $skip = abs($skip);
+        $fromBeing = intval(abs($fromBeing));
+        $skip = intval(abs($skip));
         # run
         $leftFromBegin = substr($this->template, 0, $fromBeing);
         $leftFromEnd = (0 == $skip) ? substr($this->template, $fromBeing) : substr($this->template, $fromBeing + $skip);

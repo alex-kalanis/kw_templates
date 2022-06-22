@@ -3,7 +3,7 @@
 namespace kalanis\kw_templates;
 
 
-use ArrayAccess, IteratorAggregate, Traversable, Countable, ArrayIterator;
+use ArrayAccess, IteratorAggregate, Traversable, ArrayIterator;
 
 
 /**
@@ -11,7 +11,7 @@ use ArrayAccess, IteratorAggregate, Traversable, Countable, ArrayIterator;
  * @author Adam Dornak original
  * @author Petr Plsek refactored
  */
-abstract class AHtmlElement implements Interfaces\IHtmlElement, ArrayAccess, IteratorAggregate, Countable
+abstract class AHtmlElement implements Interfaces\IHtmlElement, ArrayAccess, IteratorAggregate
 {
     use HtmlElement\THtmlElement;
 

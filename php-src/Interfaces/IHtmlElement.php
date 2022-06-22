@@ -3,7 +3,7 @@
 namespace kalanis\kw_templates\Interfaces;
 
 
-use Traversable;
+use Countable, Traversable;
 
 
 /**
@@ -11,7 +11,7 @@ use Traversable;
  * @package kalanis\kw_templates\Interfaces
  * Base of each html element
  */
-interface IHtmlElement extends IAttributes
+interface IHtmlElement extends IAttributes, Countable
 {
     /**
      * Returns object alias

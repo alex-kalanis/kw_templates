@@ -41,7 +41,7 @@ class HtmlElement extends AHtmlElement
      */
     public function __construct(string $name, array $attributes = [])
     {
-        $name = str_ireplace(['<','>'],'', $name);
+        $name = strval(str_ireplace(['<','>'],'', $name));
         $parts = explode(' ', $name, 2);
         $name = $parts[0];
 

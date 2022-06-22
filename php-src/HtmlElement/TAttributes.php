@@ -94,7 +94,8 @@ trait TAttributes
         $array = [];
         $string = trim($attributes);
         if (preg_match_all('/([a-z]+)\=("|\')?(.+?)(?(2)\2)(\s|$)/', $string, $matches)) {
-            for ($i = 0; $i < count($matches[1]); $i++) {
+            $limit = count($matches[1]);
+            for ($i = 0; $i < $limit; $i++) {
                 $array[$matches[1][$i]] = trim($matches[3][$i]);
             }
         }
