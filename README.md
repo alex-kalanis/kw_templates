@@ -1,6 +1,6 @@
 # kw_templates
 
-[![Build Status](https://app.travis-ci.com/alex-kalanis/kw_templates.svg?branch=master)](https://app.travis-ci.com/github/alex-kalanis/kw_templates)
+![Build Status](https://github.com/alex-kalanis/kw_templates/actions/workflows/code_checks.yml/badge.svg)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/alex-kalanis/kw_templates/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/alex-kalanis/kw_templates/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/alex-kalanis/kw_templates/v/stable.svg?v=1)](https://packagist.org/packages/alex-kalanis/kw_templates)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.3-8892BF.svg)](https://php.net/)
@@ -12,12 +12,8 @@ Simple template system for PHP and Python
 
 # PHP Installation
 
-```
-{
-    "require": {
-        "alex-kalanis/kw_templates": "2.1"
-    }
-}
+```bash
+composer.phar require alex-kalanis/kw_templates
 ```
 
 (Refer to [Composer Documentation](https://github.com/composer/composer/blob/master/doc/00-intro.md#introduction) if you are not

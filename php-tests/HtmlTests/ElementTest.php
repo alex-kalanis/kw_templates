@@ -124,7 +124,7 @@ class ElementTest extends CommonTestClass
 
 class Element extends AHtmlElement
 {
-    protected $template = '--%s-- %s';
+    protected string $template = '--%s-- %s';
 
     public function __construct(string $alias)
     {
@@ -135,17 +135,17 @@ class Element extends AHtmlElement
 
 class SomeChild extends AHtmlElement
 {
-    protected $template = '::poiuztrewq %s %s';
+    protected string $template = '::poiuztrewq %s %s';
 }
 
 
 class ElseChild extends AHtmlElement
 {
-    protected $template = '::lkjhgfdsa %s %s';
+    protected string $template = '::lkjhgfdsa %s %s';
 }
 
 
 class NextChild extends AHtmlElement
 {
-    protected $template = 'mnbvcxy %s %s';
+    protected string $template = 'mnbvcxy %s %s';
 }
